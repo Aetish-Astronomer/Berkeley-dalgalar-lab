@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="obsidian">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Berkeley Dalgalar Teorik Laboratuvarı · Cilt 3 (F. S. Crawford)</title>
+  <meta name="description" content="Berkeley Fizik Öğretisi Cilt 3: Titreşimler ve Dalgalar — 3Blue1Brown Estetiğinde Etkileşimli Türetim Motoru, Matematiksel Büyüteç ve Çoklu-Uzay WebGL Laboratuvarı" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="lab-shell">
+    <!-- Left Navigation Rail / Drawer -->
+    <aside id="nav-sidebar" class="nav-sidebar">
+      <div class="brand-box">
+        <div class="brand-orb">
+          <svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">
+            <circle cx="20" cy="20" r="17" fill="none" stroke="#58C4DD" stroke-width="2" stroke-dasharray="4 2" />
+            <path d="M5 20 Q 12.5 6, 20 20 T 35 20" fill="none" stroke="#FFFF00" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="20" cy="20" r="3" fill="#FC6255" />
+          </svg>
+        </div>
+        <div class="brand-meta">
+          <span class="brand-kicker">BERKELEY FİZİK CİLT 3</span>
+          <h1 class="brand-title">Dalgalar &amp; Türetim Lab</h1>
+        </div>
+        <button id="sidebar-collapse-btn" class="icon-btn" title="Menüyü Daralt/Genişlet">◀</button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="nav-search-wrap">
+        <input type="text" id="global-search-input" placeholder="Teorem, türetim, ω(k) veya soru ara..." autocomplete="off" />
+        <div id="search-results-dropdown" class="search-dropdown hidden"></div>
+      </div>
+
+      <!-- Color-Coded Legend Pill -->
+      <div class="manim-legend-bar" title="3Blue1Brown Renk Kodlu Matematik Anahtarı">
+        <span class="legend-chip c-pos">ψ, x: Konum</span>
+        <span class="legend-chip c-vel">v, φ̇: Hız/Faz</span>
+        <span class="legend-chip c-force">F, -ω²ψ: Kuvvet</span>
+        <span class="legend-chip c-mode">ωₙ, kₙ: Kip/Özdeğer</span>
+      </div>
+
+      <!-- Dynamic Chapter & Module Tree -->
+      <nav id="curriculum-nav" class="curriculum-nav"></nav>
+
+      <!-- Bottom Mathematical Arsenal Button -->
+      <div class="sidebar-footer">
+        <button id="open-math-arsenal-btn" class="arsenal-btn">
+          <span class="arsenal-icon">🔍</span>
+          <div>
+            <div class="arsenal-title">Matematiksel Cephanelik</div>
+            <div class="arsenal-sub">Taylor, Fazör, Diklik, Determinant</div>
+          </div>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Split-Screen Workspace -->
+    <div id="split-workspace" class="split-workspace">
+      <!-- LEFT PANEL: Interactive Derivation & Proof Coach Engine -->
+      <section id="left-theory-panel" class="left-theory-panel">
+        <!-- Top Header Bar -->
+        <header class="theory-header">
+          <div class="header-top-row">
+            <button id="sidebar-expand-btn" class="icon-btn hidden" title="Menüyü Aç">☰</button>
+            <div id="breadcrumb-bar" class="breadcrumb-bar"></div>
+            <div class="header-right-controls">
+              <div class="mode-switcher" id="engine-mode-switcher">
+                <button class="mode-btn active" data-mode="derivation" title="Adım Adım Açılan Türetim Ağacı ve Sembolik Terimler">
+                  <span>📐</span> <span class="mode-btn-text">Türetim &amp; Teori</span>
+                </button>
+                <button class="mode-btn" data-mode="trainer" title="Kritik matematiksel geçişleri kendin tahmin ederek sınav antrenmanı yap">
+                  <span>🎯</span> <span class="mode-btn-text">Kendin Türet (Sınav Modu)</span>
+                </button>
+                <button class="mode-btn" data-mode="problems" title="Bölüm sonu türetim problemleri ve ev deneyleri — 4 Aşamalı İspat Koçu">
+                  <span>✏️</span> <span class="mode-btn-text">İspat Koçu</span> (<span id="problem-count-badge">22</span>)
+                </button>
+              </div>
+              <button id="lang-toggle-btn" class="lang-toggle-btn" type="button" title="Switch Language / Dili Değiştir" aria-label="Switch Language">
+                <span class="lang-icon" aria-hidden="true">🌐</span>
+                <span class="lang-badge lang-tr active">TR</span>
+                <span class="lang-divider" aria-hidden="true">/</span>
+                <span class="lang-badge lang-en">EN</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Scrollable Content Area -->
+        <div id="theory-scroll-container" class="theory-scroll-container"></div>
+      </section>
+
+      <!-- RIGHT PANEL: Synchronized 3Blue1Brown Multi-Space Stage -->
+      <section id="right-visual-panel" class="right-visual-panel">
+        <!-- Stage Sync Header -->
+        <div class="stage-topbar">
+          <div class="stage-sync-indicator">
+            <span class="pulse-dot"></span>
+            <span id="stage-step-badge" class="stage-step-badge">Adım 1 ile Senkronize</span>
+          </div>
+          <div class="stage-controls-bar">
+            <button id="sim-play-pause-btn" class="stage-ctrl-btn" title="Duraklat / Oynat (Space)">⏸ Duraklat</button>
+            <button id="sim-reset-btn" class="stage-ctrl-btn" title="Başlangıç Koşullarına Sıfırla">↺ Sıfırla</button>
+          </div>
+        </div>
+
+        <!-- UPPER SPACE: 3D Physical Space (Three.js + Custom GLSL Glow Shaders) -->
+        <div class="viewport-card physical-space-card">
+          <div class="viewport-overlay-header">
+            <span class="viewport-tag tag-physical">UZAY 1 · 3B FİZİKSEL DİZGE &amp; VEKTÖR ALANI</span>
+            <span id="physical-space-title" class="viewport-subtitle">Kütle-Yay &amp; 3B Fazör Helisi</span>
+          </div>
+          <div id="three-canvas-container" class="three-canvas-container"></div>
+          <div id="physical-hud-overlay" class="physical-hud-overlay"></div>
+        </div>
+
+        <!-- LOWER SPACE: 2D Abstract Mathematical Space (Phase Space / Dispersion ω(k) / Fourier / Normal Coords) -->
+        <div class="viewport-card abstract-space-card">
+          <div class="viewport-overlay-header">
+            <span class="viewport-tag tag-abstract">UZAY 2 · SOYUT MATEMATİKSEL UZAY</span>
+            <div id="abstract-space-tabs" class="abstract-space-tabs"></div>
+          </div>
+          <canvas id="abstract-canvas" class="abstract-canvas"></canvas>
+          <div id="abstract-readout-bar" class="abstract-readout-bar"></div>
+        </div>
+
+        <!-- Interactive Parameter & Symbolic Term Sliders -->
+        <div id="stage-parameters-dock" class="stage-parameters-dock"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Inline Mathematical Magnifier (Matematiksel Büyüteç) Modal / Drawer -->
+  <div id="math-trick-modal" class="math-trick-modal hidden" role="dialog" aria-modal="true">
+    <div class="math-trick-backdrop" id="math-trick-backdrop"></div>
+    <div class="math-trick-dialog">
+      <div class="math-trick-header">
+        <div>
+          <span class="trick-kicker">🔍 SATIR İÇİ MATEMATİKSEL BÜYÜTEÇ</span>
+          <h2 id="trick-modal-title" class="trick-modal-title">Matematiksel Hile ve İspat</h2>
+        </div>
+        <button id="trick-modal-close" class="icon-btn" title="Kapat (Esc)">✕</button>
+      </div>
+      <div id="trick-modal-body" class="math-trick-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
+
